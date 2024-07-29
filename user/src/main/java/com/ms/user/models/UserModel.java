@@ -10,7 +10,6 @@ import java.util.UUID;
 @Table(name = "TB_USER")
 public class UserModel implements Serializable {
 
-    @Serial
     private static final long serialVersionUID = 1L;
 
     @Id

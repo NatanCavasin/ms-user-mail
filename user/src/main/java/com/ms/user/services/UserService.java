@@ -1,6 +1,7 @@
 package com.ms.user.services;
 
 import com.ms.user.models.UserModel;
+import com.ms.user.producers.UserProducer;
 import com.ms.user.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import java.util.List;
 public class UserService {
 
    final UserRepository userRepository;
+   final UserProducer userProducer;
 
-   public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, UserProducer userProducer){
        this.userRepository = userRepository;
+       this.userProducer = userProducer;
    }
 
    public List<UserModel> getAllUsers(){
@@ -23,7 +26,9 @@ public class UserService {
 
    @Transactional
    public UserModel saveUser(UserModel userModel){
-       return this.userRepository.save(userModel);
+       userModel = this.userRepository.save(userModel);
+       userProducer.pusblishMessage(userModel);
+       return userModel;
    }
 
 
